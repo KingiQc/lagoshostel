@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Login from "./Login";
 import { ArrowRight, BedDouble, CalendarDays, Check, ChevronDown, Heart, MapPin, Menu, Search, ShieldCheck, SlidersHorizontal, Sparkles, Star, Users, X } from "lucide-react";
 import { useState } from "react";
 
@@ -18,6 +19,7 @@ const features = [
 export default function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [university, setUniversity] = useState("");
+  const [authMode, setAuthMode] = useState<"login" | "signup" | null>(null);
 
   return <div className="min-h-screen bg-[#faf9f7] text-[#171717] selection:bg-[#f5b544] selection:text-black">
     <header className="sticky top-0 z-40 border-b border-white/10 bg-black text-white backdrop-blur-md">
@@ -26,7 +28,7 @@ export default function Index() {
         <nav className="hidden items-center gap-7 text-[13px] font-medium text-white/75 lg:flex">
           <a href="#students" className="transition hover:text-[#a36500]">For students</a><a href="#owners" className="transition hover:text-[#a36500]">For hostel owners</a><a href="#how" className="transition hover:text-[#a36500]">How it works</a><Link to="/find-a-hostel" className="transition hover:text-[#a36500]">Find hostels</Link>
         </nav>
-        <div className="hidden items-center gap-3 lg:flex"><Link to="/login" className="px-3 text-[13px] font-semibold">Log in</Link><Link to="/find-a-hostel" className="rounded-full border border-white/30 px-4 py-2 text-[13px] font-semibold transition hover:bg-white hover:text-black">Find a hostel</Link><Link to="/owner/dashboard" className="rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-black transition hover:bg-[#f5b544]">List your hostel</Link></div>
+        <div className="hidden items-center gap-3 lg:flex"><button onClick={() => setAuthMode("login")} className="px-3 text-[13px] font-semibold">Log in</button><Link to="/find-a-hostel" className="rounded-full border border-white/30 px-4 py-2 text-[13px] font-semibold transition hover:bg-white hover:text-black">Find a hostel</Link><Link to="/owner/dashboard" className="rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-black transition hover:bg-[#f5b544]">List your hostel</Link></div>
         <button aria-label="Open navigation" className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
       </div>
       {menuOpen && <div className="border-t border-white/10 bg-black px-5 py-5 text-white lg:hidden"><div className="flex flex-col gap-4 text-sm font-semibold"><a href="#students" onClick={() => setMenuOpen(false)}>For students</a><a href="#owners" onClick={() => setMenuOpen(false)}>For hostel owners</a><Link to="/find-a-hostel">Find hostels</Link><button className="w-fit rounded-full bg-black px-5 py-2 text-white">List your hostel</button></div></div>}
@@ -53,5 +55,6 @@ export default function Index() {
       <section className="bg-[#151515] px-5 py-24 text-center text-white"><div className="mx-auto max-w-[740px]"><div className="font-display text-2xl font-extrabold tracking-[-.08em]">arc<span className="text-[#f5b544]">()</span></div><h2 className="font-display mt-7 text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[.92] tracking-[-.07em]">Your next room is<br/><span className="text-[#f5b544]">closer than you think.</span></h2><p className="mx-auto mt-5 text-sm text-white/55">Search. Compare. Reserve. Move in.</p><div className="mt-8 flex justify-center gap-3"><Link to="/find-a-hostel" className="rounded-full bg-[#f5b544] px-6 py-3.5 text-sm font-bold text-black transition hover:bg-white">Find a hostel</Link><button className="rounded-full border border-white/30 px-6 py-3.5 text-sm font-bold transition hover:bg-white hover:text-black">List your hostel</button></div></div></section>
     </main>
     <footer className="bg-[#151515] px-5 pb-8 text-white lg:px-8"><div className="mx-auto max-w-[1240px] border-t border-white/15 pt-10"><div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]"><div><div className="font-display text-2xl font-extrabold tracking-[-.08em]">arc<span className="text-[#f5b544]">()</span></div><p className="mt-4 max-w-[220px] text-sm leading-6 text-white/45">Helping students find better places to live.</p></div>{[["FOR STUDENTS","Find hostels","Saved hostels","My bookings","Help center"],["FOR HOSTEL OWNERS","List your hostel","Manage properties","Manage bookings","Pricing"],["COMPANY","About","How it works","Contact","Safety"]].map(([title,...links]) => <div key={title}><p className="text-[11px] font-bold tracking-widest text-white/35">{title}</p><div className="mt-4 space-y-3 text-sm text-white/65">{links.map(l => <p key={l}>{l}</p>)}</div></div>)}</div><div className="mt-12 flex flex-col justify-between gap-3 border-t border-white/15 pt-5 text-xs text-white/35 sm:flex-row"><span>© 2026 arc()</span><span>Privacy · Terms · Safety</span></div></div></footer>
+    {authMode && <Login embedded initialMode={authMode} onClose={() => setAuthMode(null)} />}
   </div>;
 }
