@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import OwnerDashboard from "./pages/OwnerDashboard";
 import StudentPortal from "./pages/StudentPortal";
 import OwnerPortal from "./pages/OwnerPortal";
+import PublicPage from "./pages/PublicPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/find-a-hostel" element={<FindHostel />} />
+          <Route path="/universities" element={<PublicPage />} />
+          <Route path="/how-it-works" element={<PublicPage />} />
           <Route path="/hostels/:id" element={<HostelDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Login />} />
