@@ -17,6 +17,7 @@ import OwnerPortal from "./pages/OwnerPortal";
 import PublicPage from "./pages/PublicPage";
 import BookingCheckout from "./pages/BookingCheckout";
 import BookingDetails from "./pages/BookingDetails";
+import AddProperty from "./pages/AddProperty";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/signup" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/owner/dashboard" element={<OwnerDashboard />} />
+          <Route path="/owner/properties/new" element={<AddProperty />} />
           <Route path="/student/*" element={<StudentPortal />} />
           <Route path="/owner/*" element={<OwnerPortal />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
