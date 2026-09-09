@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight, Bath, BedDouble, Check, CheckCircle2, ChevronLeft, ChevronRight, Clipboard, Copy, Heart, Home, MapPin, MessageCircle, ShieldCheck, Star, Users, Wifi, X, Zap } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
 
 const gallery = [
@@ -22,12 +22,13 @@ export default function HostelDetails() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [booked, setBooked] = useState(false);
+  const navigate = useNavigate();
 
   const share = async () => {
     if (navigator.share) await navigator.share({ title: "Greenfield Residence", text: "Take a look at this student hostel on arc()" });
     else { await navigator.clipboard?.writeText(window.location.href); setShared(true); setTimeout(() => setShared(false), 1800); }
   };
-  const reserve = (event: FormEvent) => { event.preventDefault(); setBookingOpen(false); setBooked(true); };
+  const reserve = (event: FormEvent) => { event.preventDefault(); setBookingOpen(false); navigate(`/booking/checkout?room=${selectedRoom.name === "Single room" ? "single" : "shared"}`); };
 
   return <div className="min-h-screen bg-[#faf9f7] text-[#171717]">
     <header className="sticky top-0 z-40 border-b border-black/10 bg-[#faf9f7]/95 backdrop-blur-md"><div className="mx-auto flex h-[74px] max-w-[1240px] items-center justify-between px-5 lg:px-8"><Link to="/" className="font-display text-[25px] font-extrabold tracking-[-.08em]">arc<span className="text-[#f5b544]">()</span></Link><div className="flex items-center gap-3"><Link to="/login" className="hidden px-3 text-[13px] font-semibold sm:block">Log in</Link><Link to="/find-a-hostel" className="rounded-full border border-black px-4 py-2 text-[13px] font-semibold">Find a hostel</Link></div></div></header>
