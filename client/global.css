@@ -119,6 +119,12 @@
   .feature-card:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(0,0,0,.08); }
   .process-row { display: flex; align-items: flex-start; gap: 20px; border-bottom: 1px solid rgba(23,23,23,.1); padding: 22px 0; }
   .process-number { display: flex; height: 31px; width: 31px; flex: none; align-items: center; justify-content: center; border-radius: 50%; background: #f5b544; font-size: 11px; font-weight: 800; }
+  .auth-underlay { position: absolute; inset: 0; background: linear-gradient(135deg, #111 0%, #242424 55%, #181818 100%); opacity: .9; }
+  .auth-underlay-nav { display: flex; align-items: center; gap: 28px; height: 74px; padding: 0 32px; border-bottom: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.45); font-size: 10px; }
+  .auth-input { margin-top: 4px; width: 100%; border: 0; border-bottom: 1px solid rgba(0,0,0,.16); background: #fafafa; padding: 8px; font-size: 11px; outline: 0; }
+  .auth-input:focus { border-bottom-color: #1769e8; }
+  .auth-social { display: flex; height: 27px; width: 27px; align-items: center; justify-content: center; border-radius: 999px; color: white; font-size: 12px; font-weight: 800; }
+  @media (max-width: 640px) { .auth-underlay-nav { gap: 10px; padding: 0 16px; font-size: 8px; } .auth-underlay-nav span:nth-child(2), .auth-underlay-nav span:nth-child(3) { display: none; } }
 
   * { border-color: hsl(var(--border)); }
 
