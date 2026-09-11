@@ -42,7 +42,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/owner/dashboard" element={<OwnerDashboard />} />
+          <Route path="/owner/dashboard" element={<OwnerPortal />} />
           <Route path="/owner/properties/new" element={<AddProperty />} />
           <Route path="/owner/applications/:id" element={<OwnerApplications />} />
           <Route path="/owner/applications" element={<OwnerApplications />} />
