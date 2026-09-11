@@ -19,6 +19,7 @@ import BookingCheckout from "./pages/BookingCheckout";
 import BookingDetails from "./pages/BookingDetails";
 import AddProperty from "./pages/AddProperty";
 import StudentOperations from "./pages/StudentOperations";
+import StudentApplication from "./pages/StudentApplication";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,8 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/owner/dashboard" element={<OwnerDashboard />} />
           <Route path="/owner/properties/new" element={<AddProperty />} />
+          <Route path="/student/applications/new" element={<StudentApplication />} />
+          <Route path="/student/applications/:id" element={<StudentApplication />} />
           <Route path="/student/applications" element={<StudentOperations />} />
           <Route path="/student/payments" element={<StudentOperations />} />
           <Route path="/student/messages" element={<StudentOperations />} />
