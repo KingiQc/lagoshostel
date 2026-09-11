@@ -14,6 +14,8 @@ import {
   Wrench,
 } from "lucide-react";
 
+type ApplicationStatus = "submitted" | "under_review" | "approved" | "rejected" | "more_information";
+
 type ApplicationRecord = {
   id: string;
   hostelName: string;
@@ -22,8 +24,23 @@ type ApplicationRecord = {
   roomPrice: string;
   moveInDate: string;
   submittedAt: string;
-  status: "submitted";
+  status: ApplicationStatus;
 };
+
+const statusLabels: Record<ApplicationStatus, string> = {
+  submitted: "Submitted",
+  under_review: "Under review",
+  approved: "Approved",
+  rejected: "Rejected",
+  more_information: "More information",
+};
+
+function statusClass(status: ApplicationStatus) {
+  if (status === "approved") return "bg-[#dff3e6] text-[#16733b]";
+  if (status === "rejected") return "bg-[#ffe3e3] text-[#a52a2a]";
+  if (status === "more_information") return "bg-[#eee8ff] text-[#6345a3]";
+  return "bg-[#fff4d6] text-[#8a5d00]";
+}
 
 const nav = [
   ["/student", Home, "Overview"],
@@ -80,7 +97,7 @@ function Shell({ path, children }: { path: string; children: React.ReactNode }) 
 
 function Applications({ application }: { application: ApplicationRecord | null }) {
   if (!application) return <Empty title="Applications" path="/student/applications" />;
-  return <section className="mt-8 rounded-2xl border border-black/10 bg-white p-5 sm:p-7"><div className="flex flex-col justify-between gap-4 border-b border-black/10 pb-5 sm:flex-row sm:items-start"><div><p className="text-xs font-bold text-black/45">Active application</p><h2 className="mt-1 font-display text-2xl font-extrabold">{application.hostelName}</h2><p className="mt-1 text-sm text-black/50">{application.hostelLocation} · {application.roomName}</p></div><span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#fff4d6] px-3 py-2 text-[11px] font-bold text-[#8a5d00]"><span className="h-2 w-2 rounded-full bg-[#d19a20]" /> Submitted</span></div><div className="mt-6 grid gap-5 sm:grid-cols-3"><div><p className="text-xs font-bold text-black/45">Move-in date</p><p className="mt-1 text-sm font-bold">{formatDate(application.moveInDate)}</p></div><div><p className="text-xs font-bold text-black/45">Application ID</p><p className="mt-1 text-sm font-bold">{application.id}</p></div><div><p className="text-xs font-bold text-black/45">Submitted</p><p className="mt-1 text-sm font-bold">{formatDate(application.submittedAt.slice(0, 10))}</p></div></div><div className="mt-6 flex flex-col justify-between gap-4 rounded-xl bg-[#f7f6f3] p-4 sm:flex-row sm:items-center"><p className="max-w-xl text-xs leading-5 text-black/55">The hostel team will review your details and contact you when there is an update.</p><Link to={`/student/applications/${application.id}`} className="inline-flex w-fit items-center rounded-full bg-black px-4 py-3 text-xs font-bold text-white">View application <ArrowRight className="ml-2 h-4 w-4" /></Link></div></section>;
+  return <section className="mt-8 rounded-2xl border border-black/10 bg-white p-5 sm:p-7"><div className="flex flex-col justify-between gap-4 border-b border-black/10 pb-5 sm:flex-row sm:items-start"><div><p className="text-xs font-bold text-black/45">Active application</p><h2 className="mt-1 font-display text-2xl font-extrabold">{application.hostelName}</h2><p className="mt-1 text-sm text-black/50">{application.hostelLocation} · {application.roomName}</p></div><span className={`inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-[11px] font-bold ${statusClass(application.status)}`}><span className="h-2 w-2 rounded-full bg-current" /> {statusLabels[application.status]}</span></div><div className="mt-6 grid gap-5 sm:grid-cols-3"><div><p className="text-xs font-bold text-black/45">Move-in date</p><p className="mt-1 text-sm font-bold">{formatDate(application.moveInDate)}</p></div><div><p className="text-xs font-bold text-black/45">Application ID</p><p className="mt-1 text-sm font-bold">{application.id}</p></div><div><p className="text-xs font-bold text-black/45">Submitted</p><p className="mt-1 text-sm font-bold">{formatDate(application.submittedAt.slice(0, 10))}</p></div></div><div className="mt-6 flex flex-col justify-between gap-4 rounded-xl bg-[#f7f6f3] p-4 sm:flex-row sm:items-center"><p className="max-w-xl text-xs leading-5 text-black/55">The hostel team will review your details and contact you when there is an update.</p><Link to={`/student/applications/${application.id}`} className="inline-flex w-fit items-center rounded-full bg-black px-4 py-3 text-xs font-bold text-white">View application <ArrowRight className="ml-2 h-4 w-4" /></Link></div></section>;
 }
 
 function Empty({ title, path }: { title: string; path: string }) {

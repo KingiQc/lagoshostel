@@ -21,6 +21,8 @@ type RoomOption = {
   description: string;
 };
 
+type ApplicationStatus = "submitted" | "under_review" | "approved" | "rejected" | "more_information";
+
 type ApplicationRecord = {
   id: string;
   hostelName: string;
@@ -29,7 +31,7 @@ type ApplicationRecord = {
   roomPrice: string;
   moveInDate: string;
   submittedAt: string;
-  status: "submitted";
+  status: ApplicationStatus;
   firstName: string;
   lastName: string;
   email: string;
@@ -54,6 +56,8 @@ const rooms: RoomOption[] = [
 ];
 
 const storageKey = "arc.student.application";
+const statusLabels: Record<ApplicationStatus, string> = { submitted: "Submitted", under_review: "Under review", approved: "Approved", rejected: "Rejected", more_information: "More information" };
+const statusClasses: Record<ApplicationStatus, string> = { submitted: "bg-[#fff4d6] text-[#8a5d00]", under_review: "bg-[#fff4d6] text-[#8a5d00]", approved: "bg-[#dff3e6] text-[#16733b]", rejected: "bg-[#ffe3e3] text-[#a52a2a]", more_information: "bg-[#eee8ff] text-[#6345a3]" };
 
 function readApplication(): ApplicationRecord | null {
   try {
@@ -120,7 +124,7 @@ function ApplicationDetail({ application }: { application: ApplicationRecord }) 
             <h1 className="mt-2 font-display text-4xl font-extrabold tracking-[-.06em] sm:text-6xl">Your application.</h1>
             <p className="mt-3 text-sm text-black/55">Submitted {formatDate(application.submittedAt.slice(0, 10))}. We’ll update you here as the hostel reviews it.</p>
           </div>
-          <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#fff4d6] px-4 py-2 text-xs font-bold text-[#8a5d00]"><CheckCircle2 className="h-4 w-4" /> Submitted</span>
+          <span className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-bold ${statusClasses[application.status]}`}><CheckCircle2 className="h-4 w-4" /> {statusLabels[application.status]}</span>
         </div>
         <div className="mt-10 grid gap-5 lg:grid-cols-[1fr_320px]">
           <section className="rounded-2xl border border-black/10 bg-white p-6 sm:p-8">
