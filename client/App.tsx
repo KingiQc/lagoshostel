@@ -21,6 +21,7 @@ import AddProperty from "./pages/AddProperty";
 import StudentOperations from "./pages/StudentOperations";
 import StudentApplication from "./pages/StudentApplication";
 import OwnerApplications from "./pages/OwnerApplications";
+import UniversityPortal from "./pages/UniversityPortal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/find-a-hostel" element={<FindHostel />} />
           <Route path="/universities" element={<PublicPage />} />
+          <Route path="/university" element={<UniversityPortal />} />
+          <Route path="/university/*" element={<UniversityPortal />} />
           <Route path="/how-it-works" element={<PublicPage />} />
           <Route path="/hostels/:id" element={<HostelDetails />} />
           <Route path="/booking/checkout" element={<BookingCheckout />} />
