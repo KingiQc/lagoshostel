@@ -18,6 +18,7 @@ import PublicPage from "./pages/PublicPage";
 import BookingCheckout from "./pages/BookingCheckout";
 import BookingDetails from "./pages/BookingDetails";
 import AddProperty from "./pages/AddProperty";
+import StudentOperations from "./pages/StudentOperations";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,12 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/owner/dashboard" element={<OwnerDashboard />} />
           <Route path="/owner/properties/new" element={<AddProperty />} />
+          <Route path="/student/applications" element={<StudentOperations />} />
+          <Route path="/student/payments" element={<StudentOperations />} />
+          <Route path="/student/messages" element={<StudentOperations />} />
+          <Route path="/student/notifications" element={<StudentOperations />} />
+          <Route path="/student/profile" element={<StudentOperations />} />
+          <Route path="/student/maintenance" element={<StudentOperations />} />
           <Route path="/student/*" element={<StudentPortal />} />
           <Route path="/owner/*" element={<OwnerPortal />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
