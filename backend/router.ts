@@ -208,6 +208,76 @@ export function createBackendRouter(store: BackendStore = createBackendStore()) 
     res.json({ data: safeProperty(updated) });
   });
 
+  router.get("/owner/overview", requireUser(auth, ["owner"]), (req: AuthedRequest, res) => {
+    const properties = [...store.properties.values()].filter((property) => property.ownerId === req.user!.id);
+    const propertyIds = new Set(properties.map((property) => property.id));
+    const applications = [...store.applications.values()].filter((application) => propertyIds.has(application.propertyId));
+    const bookings = [...store.bookings.values()].filter((booking) => propertyIds.has(booking.propertyId));
+
+    res.json({
+      data: {
+        metrics: {
+          properties: properties.length,
+          rooms: properties.reduce((total, property) => total + property.rooms.length, 0),
+          applications: applications.length,
+          bookings: bookings.length,
+        },
+        properties: properties.map(safeProperty),
+      },
+    });
+  });
+
+  router.get("/university/overview", requireUser(auth, ["university"]), (_req, res) => {
+    const properties = [...store.properties.values()];
+    res.json({
+      data: {
+        metrics: {
+          totalProperties: properties.length,
+          pendingVerification: properties.filter((property) => property.status === "under_review").length,
+          verifiedProperties: properties.filter((property) => property.status === "verified").length,
+          applications: store.applications.size,
+        },
+      },
+    });
+  });
+
+  router.get("/university/verification", requireUser(auth, ["university"]), (_req, res) => {
+    const queue = [...store.properties.values()]
+      .filter((property) => property.status === "under_review" || property.status === "changes_requested")
+      .map(safeProperty);
+    res.json({ data: queue, meta: { count: queue.length } });
+  });
+
+  router.get("/admin/overview", requireUser(auth, ["admin"]), (_req, res) => {
+    res.json({
+      data: {
+        metrics: {
+          users: store.users.size,
+          properties: store.properties.size,
+          applications: store.applications.size,
+          bookings: store.bookings.size,
+          supportTickets: store.supportTickets.size,
+        },
+      },
+    });
+  });
+
+  router.get("/admin/users", requireUser(auth, ["admin"]), (_req, res) => {
+    res.json({ data: [...store.users.values()].map(publicUser), meta: { count: store.users.size } });
+  });
+
+  router.get("/admin/properties", requireUser(auth, ["admin"]), (_req, res) => {
+    const properties = [...store.properties.values()].map(safeProperty);
+    res.json({ data: properties, meta: { count: properties.length } });
+  });
+
+  router.get("/admin/verification", requireUser(auth, ["admin"]), (_req, res) => {
+    const queue = [...store.properties.values()]
+      .filter((property) => property.status === "under_review" || property.status === "changes_requested")
+      .map(safeProperty);
+    res.json({ data: queue, meta: { count: queue.length } });
+  });
+
   router.post("/applications", requireUser(auth, ["student"]), (req: AuthedRequest, res) => {
     const input = parseBody(applicationSchema, req.body);
     if (!input) return sendError(res, 400, "INVALID_REQUEST", "Provide a property, room, move-in date, and valid application details.");
