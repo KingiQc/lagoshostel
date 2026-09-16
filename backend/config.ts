@@ -5,9 +5,16 @@ const environmentSchema = z.object({
   SESSION_TTL_DAYS: z.coerce.number().int().positive().default(7),
   SUPABASE_URL: z.string().url().optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+  CLOUDINARY_API_KEY: z.string().min(1).optional(),
+  CLOUDINARY_API_SECRET: z.string().min(1).optional(),
 }).superRefine((config, context) => {
   if (Boolean(config.SUPABASE_URL) !== Boolean(config.SUPABASE_SERVICE_ROLE_KEY)) {
     context.addIssue({ code: "custom", message: "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be provided together." });
+  }
+  const cloudinaryValues = [config.CLOUDINARY_CLOUD_NAME, config.CLOUDINARY_API_KEY, config.CLOUDINARY_API_SECRET];
+  if (cloudinaryValues.some(Boolean) && cloudinaryValues.some((value) => !value)) {
+    context.addIssue({ code: "custom", message: "CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET must be provided together." });
   }
 });
 

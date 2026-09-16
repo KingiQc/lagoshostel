@@ -1,4 +1,6 @@
+import http from "node:http";
 import path from "node:path";
+import { attachRealtime } from "../backend/realtime";
 import { createServer } from "./index";
 import * as express from "express";
 
@@ -22,19 +24,20 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
-app.listen(port, () => {
+const httpServer = http.createServer(app);
+attachRealtime(httpServer, app.locals.arcBackend.store, app.locals.arcBackend.auth);
+
+httpServer.listen(port, () => {
   console.log(`🚀 Fusion Starter server running on port ${port}`);
   console.log(`📱 Frontend: http://localhost:${port}`);
   console.log(`🔧 API: http://localhost:${port}/api`);
 });
 
 // Graceful shutdown
-process.on("SIGTERM", () => {
-  console.log("🛑 Received SIGTERM, shutting down gracefully");
-  process.exit(0);
-});
+const shutdown = () => {
+  console.log("🛑 Received shutdown signal, shutting down gracefully");
+  httpServer.close(() => process.exit(0));
+};
 
-process.on("SIGINT", () => {
-  console.log("🛑 Received SIGINT, shutting down gracefully");
-  process.exit(0);
-});
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);

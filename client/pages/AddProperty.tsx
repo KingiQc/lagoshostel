@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getStoredSessionToken, uploadImageToCloudinary } from "@/lib/api";
 import {
   ArrowLeft,
   ArrowRight,
@@ -47,8 +48,28 @@ function PropertyStep({ value, onChange }: { value: PropertyDetails; onChange: (
 }
 
 function PhotosStep({ photos, setPhotos }: { photos: string[]; setPhotos: (next: string[] | ((current: string[]) => string[])) => void }) {
-  const addPhotos = (event: ChangeEvent<HTMLInputElement>) => { Array.from(event.target.files ?? []).forEach((file) => { const reader = new FileReader(); reader.onload = () => setPhotos((current) => [...current, String(reader.result)]); reader.readAsDataURL(file); }); event.target.value = ""; };
-  return <div><p className="eyebrow">Step 2 of 5</p><h1 className="mt-2 font-display text-3xl font-extrabold">Show students around.</h1><p className="mt-2 text-sm text-black/50">Add clear photos of the rooms and shared spaces.</p><div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3"><label className="flex h-36 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#f5b544] bg-[#fff9e9] text-xs font-bold"><ImagePlus className="mb-2 h-6 w-6 text-[#a36500]" />{photos.length ? "Add more photos" : "Upload photos"}<input type="file" accept="image/*" multiple onChange={addPhotos} className="hidden" /></label>{photos.map((photo, index) => <div className="relative h-36 overflow-hidden rounded-xl" key={photo}><img src={photo} alt={`Property photo ${index + 1}`} className="h-full w-full object-cover" /><button type="button" onClick={() => setPhotos((current) => current.filter((_, photoIndex) => photoIndex !== index))} className="absolute right-2 top-2 rounded-full bg-white/90 p-1"><X className="h-3 w-3" /></button></div>)}</div>{photos.length === 0 && <p className="mt-4 text-xs text-[#a36500]">Add at least one photo to continue.</p>}</div>;
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const addPhotos = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+    event.target.value = "";
+    if (!files.length) return;
+    const token = getStoredSessionToken();
+    if (!token) return setUploadError("Log in as an owner before uploading property photos.");
+    setUploadError("");
+    setUploading(true);
+    try {
+      for (const file of files) {
+        const url = await uploadImageToCloudinary(file, token);
+        setPhotos((current) => [...current, url]);
+      }
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : "Cloudinary could not upload this image.");
+    } finally {
+      setUploading(false);
+    }
+  };
+  return <div><p className="eyebrow">Step 2 of 5</p><h1 className="mt-2 font-display text-3xl font-extrabold">Show students around.</h1><p className="mt-2 text-sm text-black/50">Add clear photos of the rooms and shared spaces. Images are stored securely in Cloudinary.</p><div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3"><label className={`flex h-36 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#f5b544] bg-[#fff9e9] text-xs font-bold ${uploading ? "cursor-wait opacity-60" : ""}`}><ImagePlus className="mb-2 h-6 w-6 text-[#a36500]" />{uploading ? "Uploading..." : photos.length ? "Add more photos" : "Upload photos"}<input disabled={uploading} type="file" accept="image/*" multiple onChange={addPhotos} className="hidden" /></label>{photos.map((photo, index) => <div className="relative h-36 overflow-hidden rounded-xl" key={photo}><img src={photo} alt={`Property photo ${index + 1}`} className="h-full w-full object-cover" /><button type="button" onClick={() => setPhotos((current) => current.filter((_, photoIndex) => photoIndex !== index))} className="absolute right-2 top-2 rounded-full bg-white/90 p-1"><X className="h-3 w-3" /></button></div>)}</div>{uploadError && <p className="mt-4 rounded-xl bg-[#fff0f0] px-3 py-2 text-xs font-semibold text-[#a52a2a]" role="alert">{uploadError}</p>}{photos.length === 0 && <p className="mt-4 text-xs text-[#a36500]">Add at least one Cloudinary photo to continue.</p>}</div>;
 }
 
 function AmenitiesStep({ selected, toggle }: { selected: string[]; toggle: (name: string) => void }) { return <div><p className="eyebrow">Step 3 of 5</p><h1 className="mt-2 font-display text-3xl font-extrabold">What does your hostel include?</h1><p className="mt-2 text-sm text-black/50">Select everything students can expect at the property.</p><div className="mt-8 grid gap-3 sm:grid-cols-2">{amenityOptions.map(([Icon, name]) => <button type="button" onClick={() => toggle(name)} className={`flex items-center gap-3 rounded-xl border p-4 text-left text-sm font-bold ${selected.includes(name) ? "border-[#f5b544] bg-[#fff9e9]" : "border-black/10"}`} key={name}><span className="rounded-lg bg-[#f5b544]/25 p-2"><Icon className="h-4 w-4" /></span>{name}<span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full border border-black/15">{selected.includes(name) && <Check className="h-3 w-3" />}</span></button>)}</div>{selected.length === 0 && <p className="mt-4 text-xs text-[#a36500]">Select at least one amenity to continue.</p>}</div>; }

@@ -89,3 +89,42 @@ export async function signup(input: { name: string; email: string; password: str
     body: JSON.stringify(input),
   });
 }
+
+export function getStoredSessionToken(): string | null {
+  try {
+    const session = JSON.parse(window.localStorage.getItem("arc.session") ?? "null") as { token?: string } | null;
+    return session?.token ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export type CloudinaryUploadSignature = {
+  cloudName: string;
+  apiKey: string;
+  folder: string;
+  timestamp: number;
+  signature: string;
+};
+
+export async function uploadImageToCloudinary(file: File, token: string): Promise<string> {
+  const signatureResponse = await request<{ data: CloudinaryUploadSignature }>("/uploads/signature", {
+    method: "POST",
+    headers: { authorization: `Bearer ${token}` },
+  });
+  const { data: signature } = signatureResponse;
+  const form = new FormData();
+  form.append("file", file);
+  form.append("api_key", signature.apiKey);
+  form.append("timestamp", String(signature.timestamp));
+  form.append("signature", signature.signature);
+  form.append("folder", signature.folder);
+
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${signature.cloudName}/image/upload`, {
+    method: "POST",
+    body: form,
+  });
+  const body = (await response.json()) as { secure_url?: string; error?: { message?: string } };
+  if (!response.ok || !body.secure_url) throw new Error(body.error?.message ?? "The image could not be uploaded.");
+  return body.secure_url;
+}

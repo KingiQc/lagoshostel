@@ -3,6 +3,7 @@ import { z } from "zod";
 import { AuthService, getBearerToken, publicUser } from "./auth";
 import { getBackendConfig } from "./config";
 import { getPersistenceProvider } from "./supabase";
+import { createCloudinaryUploadSignature } from "./cloudinary";
 import { applicationStatuses, type Property, type Role, type User } from "./domain";
 import { createBackendStore, createId, now, type BackendStore } from "./store";
 
@@ -107,10 +108,10 @@ function requireUser(auth: AuthService, allowedRoles?: Role[]) {
   };
 }
 
-export function createBackendRouter(store: BackendStore = createBackendStore()) {
+export function createBackendRouter(store: BackendStore = createBackendStore(), sharedAuth?: AuthService) {
   const router = Router();
   const config = getBackendConfig();
-  const auth = new AuthService(store, config);
+  const auth = sharedAuth ?? new AuthService(store, config);
 
   router.get("/health", (_req, res) => {
     res.json({ status: "ok", service: "arc-api", persistence: getPersistenceProvider(config), data: "in-memory-empty-store" });
@@ -173,6 +174,12 @@ export function createBackendRouter(store: BackendStore = createBackendStore()) 
       return sendError(res, 404, "PROPERTY_NOT_FOUND", "Verified property not found.");
     }
     res.json({ data: safeProperty(property) });
+  });
+
+  router.post("/uploads/signature", requireUser(auth, ["owner", "admin"]), (req: AuthedRequest, res) => {
+    const signature = createCloudinaryUploadSignature(config, req.user!.id);
+    if (!signature) return sendError(res, 503, "CLOUDINARY_NOT_CONFIGURED", "Image uploads are not configured yet.");
+    res.json({ data: signature });
   });
 
   router.post("/properties", requireUser(auth, ["owner"]), (req: AuthedRequest, res) => {

@@ -1,6 +1,8 @@
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
+import type { Server as NodeHttpServer } from "node:http";
+import { attachRealtime } from "./backend/realtime";
 import { createServer } from "./server";
 
 // https://vitejs.dev/config/
@@ -34,6 +36,7 @@ function expressPlugin(): Plugin {
 
       // Add Express app as middleware to Vite dev server
       server.middlewares.use(app);
+      if (server.httpServer) attachRealtime(server.httpServer as NodeHttpServer, app.locals.arcBackend.store, app.locals.arcBackend.auth);
     },
   };
 }
