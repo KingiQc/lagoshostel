@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import { createBackendRouter } from "../backend";
 import { handleDemo } from "./routes/demo";
 
 export function createServer() {
@@ -18,6 +19,7 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+  app.use("/api/v1", createBackendRouter());
 
   return app;
 }
