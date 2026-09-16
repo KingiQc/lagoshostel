@@ -2,7 +2,7 @@ import { Router, type NextFunction, type Request, type Response } from "express"
 import { z } from "zod";
 import { AuthService, getBearerToken, publicUser } from "./auth";
 import { getBackendConfig } from "./config";
-import { getPersistenceProvider } from "./supabase";
+import { getPersistenceProvider } from "./mongodb";
 import { createCloudinaryUploadSignature } from "./cloudinary";
 import { applicationStatuses, type Property, type Role, type User } from "./domain";
 import { createBackendStore, createId, now, type BackendStore } from "./store";

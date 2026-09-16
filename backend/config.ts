@@ -3,14 +3,14 @@ import { z } from "zod";
 const environmentSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   SESSION_TTL_DAYS: z.coerce.number().int().positive().default(7),
-  SUPABASE_URL: z.string().url().optional(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
+  MONGODB_URI: z.string().min(1).refine((value) => /^(mongodb|mongodb\+srv):\/\//.test(value), "MONGODB_URI must be a MongoDB connection string.").optional(),
+  MONGODB_DB: z.string().min(1).optional(),
   CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
   CLOUDINARY_API_KEY: z.string().min(1).optional(),
   CLOUDINARY_API_SECRET: z.string().min(1).optional(),
 }).superRefine((config, context) => {
-  if (Boolean(config.SUPABASE_URL) !== Boolean(config.SUPABASE_SERVICE_ROLE_KEY)) {
-    context.addIssue({ code: "custom", message: "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be provided together." });
+  if (Boolean(config.MONGODB_URI) !== Boolean(config.MONGODB_DB)) {
+    context.addIssue({ code: "custom", message: "MONGODB_URI and MONGODB_DB must be provided together." });
   }
   const cloudinaryValues = [config.CLOUDINARY_CLOUD_NAME, config.CLOUDINARY_API_KEY, config.CLOUDINARY_API_SECRET];
   if (cloudinaryValues.some(Boolean) && cloudinaryValues.some((value) => !value)) {
