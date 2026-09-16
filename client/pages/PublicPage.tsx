@@ -268,6 +268,7 @@ const footerGroups = [
 function PublicHeader() {
   return (
     <header className="border-b border-white/10 bg-black text-white">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-5 focus:top-4 focus:z-50 focus:rounded-full focus:bg-[#f5b544] focus:px-4 focus:py-2 focus:text-xs focus:font-bold focus:text-black">Skip to content</a>
       <div className="mx-auto flex h-[74px] max-w-[1240px] items-center justify-between px-5 lg:px-8">
         <Link to="/" className="font-display text-[25px] font-extrabold tracking-[-.08em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5b544]">
           arc<span className="text-[#f5b544]">()</span>
@@ -301,9 +302,9 @@ function PublicFooter() {
         {footerGroups.map((group) => (
           <div key={group.title}>
             <p className="text-xs font-bold uppercase tracking-[.14em] text-white/40">{group.title}</p>
-            <div className="mt-4 flex flex-col items-start gap-3 text-sm text-white/70">
+            <nav className="mt-4 flex flex-col items-start gap-3 text-sm text-white/70" aria-label={`${group.title} links`}>
               {group.links.map(([label, href]) => <Link key={href} to={href} className="transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#f5b544]">{label}</Link>)}
-            </div>
+            </nav>
           </div>
         ))}
       </div>
@@ -328,11 +329,11 @@ function ContactForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-3xl border border-[#f5b544]/40 bg-[#fff8e8] p-7">
+      <div role="status" aria-live="polite" className="rounded-3xl border border-[#f5b544]/40 bg-[#fff8e8] p-7">
         <CheckCircle2 className="h-8 w-8 text-[#a36500]" />
         <h2 className="mt-5 font-display text-2xl font-extrabold tracking-[-.04em]">Your message is ready.</h2>
         <p className="mt-3 text-sm leading-6 text-black/60">Thanks for getting in touch. This preview has recorded the successful submission state. Delivery will be connected when the support service is available.</p>
-        <button type="button" onClick={() => setSubmitted(false)} className="mt-6 rounded-full bg-black px-5 py-3 text-sm font-bold text-white">Send another message</button>
+        <button type="button" onClick={() => setSubmitted(false)} className="mt-6 rounded-full bg-black px-5 py-3 text-sm font-bold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a36500]">Send another message</button>
       </div>
     );
   }
@@ -345,7 +346,7 @@ function ContactForm() {
       </div>
       <label className="mt-5 block text-xs font-bold text-black/60">What can we help with?<select required name="topic" defaultValue="" className="auth-input"><option value="" disabled>Select a topic</option><option>Finding accommodation</option><option>Managing a property</option><option>University partnership</option><option>Something else</option></select></label>
       <label className="mt-5 block text-xs font-bold text-black/60">Message<textarea required name="message" rows={5} className="mt-2 w-full resize-y rounded-xl border border-black/10 bg-[#fafafa] p-3 text-sm font-normal outline-none focus:border-black/40" placeholder="Tell us what you need help with" /></label>
-      <button type="submit" className="mt-6 inline-flex items-center rounded-full bg-black px-6 py-3.5 text-sm font-bold text-white">Send message <ArrowRight className="ml-2 h-4 w-4" /></button>
+      <button type="submit" className="mt-6 inline-flex items-center rounded-full bg-black px-6 py-3.5 text-sm font-bold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a36500]">Send message <ArrowRight className="ml-2 h-4 w-4" /></button>
     </form>
   );
 }
@@ -371,7 +372,7 @@ export default function PublicPage() {
   return (
     <div className="min-h-screen bg-[#faf9f7] text-[#171717]">
       <PublicHeader />
-      <main className="mx-auto max-w-[1100px] px-5 py-16 lg:px-8 lg:py-24">
+      <main id="main-content" tabIndex={-1} className="mx-auto max-w-[1100px] px-5 py-16 outline-none lg:px-8 lg:py-24">
         <p className="eyebrow text-[#a36500]">{page.eyebrow}</p>
         <h1 className="section-title mt-4 max-w-[840px]">{page.title}</h1>
         <p className="mt-6 max-w-[650px] text-base leading-7 text-black/55">{page.text}</p>
