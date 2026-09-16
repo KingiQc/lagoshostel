@@ -2,6 +2,7 @@ import { Router, type NextFunction, type Request, type Response } from "express"
 import { z } from "zod";
 import { AuthService, getBearerToken, publicUser } from "./auth";
 import { getBackendConfig } from "./config";
+import { getPersistenceProvider } from "./supabase";
 import { applicationStatuses, type Property, type Role, type User } from "./domain";
 import { createBackendStore, createId, now, type BackendStore } from "./store";
 
@@ -108,10 +109,11 @@ function requireUser(auth: AuthService, allowedRoles?: Role[]) {
 
 export function createBackendRouter(store: BackendStore = createBackendStore()) {
   const router = Router();
-  const auth = new AuthService(store, getBackendConfig());
+  const config = getBackendConfig();
+  const auth = new AuthService(store, config);
 
   router.get("/health", (_req, res) => {
-    res.json({ status: "ok", service: "arc-api", data: "in-memory-empty-store" });
+    res.json({ status: "ok", service: "arc-api", persistence: getPersistenceProvider(config), data: "in-memory-empty-store" });
   });
 
   router.post("/auth/signup", (req, res) => {
