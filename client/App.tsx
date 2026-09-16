@@ -42,6 +42,13 @@ const App = () => (
           <Route path="/admin" element={<AdminPortal />} />
           <Route path="/admin/*" element={<AdminPortal />} />
           <Route path="/how-it-works" element={<PublicPage />} />
+          <Route path="/about" element={<PublicPage />} />
+          <Route path="/safety" element={<PublicPage />} />
+          <Route path="/help" element={<PublicPage />} />
+          <Route path="/contact" element={<PublicPage />} />
+          <Route path="/faq" element={<PublicPage />} />
+          <Route path="/terms" element={<PublicPage />} />
+          <Route path="/privacy" element={<PublicPage />} />
           <Route path="/hostels/:id" element={<HostelDetails />} />
           <Route path="/booking/checkout" element={<BookingCheckout />} />
           <Route path="/student/bookings/:id" element={<BookingDetails />} />
