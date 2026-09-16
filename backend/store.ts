@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { Application, Booking, Property, SupportTicket, User } from "./domain";
+import type { Application, Booking, MaintenanceRequest, Message, Notification, Property, SupportTicket, User } from "./domain";
 
 export type BackendStore = {
   users: Map<string, User>;
@@ -7,6 +7,9 @@ export type BackendStore = {
   properties: Map<string, Property>;
   applications: Map<string, Application>;
   bookings: Map<string, Booking>;
+  maintenanceRequests: Map<string, MaintenanceRequest>;
+  messages: Map<string, Message>;
+  notifications: Map<string, Notification>;
   supportTickets: Map<string, SupportTicket>;
 };
 
@@ -17,6 +20,9 @@ export function createBackendStore(): BackendStore {
     properties: new Map(),
     applications: new Map(),
     bookings: new Map(),
+    maintenanceRequests: new Map(),
+    messages: new Map(),
+    notifications: new Map(),
     supportTickets: new Map(),
   };
 }

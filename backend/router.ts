@@ -54,6 +54,21 @@ const supportSchema = z.object({
   message: z.string().trim().min(10).max(5000),
 });
 
+const paymentIntentSchema = z.object({
+  bookingId: z.string().uuid(),
+});
+
+const messageSchema = z.object({
+  recipientId: z.string().uuid(),
+  body: z.string().trim().min(1).max(5000),
+});
+
+const maintenanceSchema = z.object({
+  propertyId: z.string().uuid().optional(),
+  subject: z.string().trim().min(2).max(160),
+  description: z.string().trim().min(10).max(5000),
+});
+
 const reviewSchema = z.object({
   status: z.enum(applicationStatuses),
   reviewNote: z.string().trim().max(2000).optional(),
@@ -273,6 +288,56 @@ export function createBackendRouter(store: BackendStore = createBackendStore()) 
   router.get("/bookings/mine", requireUser(auth, ["student"]), (req: AuthedRequest, res) => {
     const bookings = [...store.bookings.values()].filter((booking) => booking.studentId === req.user!.id);
     res.json({ data: bookings, meta: { count: bookings.length } });
+  });
+
+  router.get("/payments/mine", requireUser(auth, ["student"]), (_req, res) => {
+    res.json({ data: [], meta: { count: 0, status: "payment_provider_not_configured" } });
+  });
+
+  router.post("/payments/intents", requireUser(auth, ["student"]), (req: AuthedRequest, res) => {
+    const input = parseBody(paymentIntentSchema, req.body);
+    if (!input) return sendError(res, 400, "INVALID_REQUEST", "Provide a valid booking id.");
+
+    const booking = store.bookings.get(input.bookingId);
+    if (!booking || booking.studentId !== req.user!.id) {
+      return sendError(res, 404, "BOOKING_NOT_FOUND", "Booking not found.");
+    }
+    return sendError(res, 501, "PAYMENTS_NOT_CONFIGURED", "Payment processing is not connected yet.");
+  });
+
+  router.get("/messages/mine", requireUser(auth), (req: AuthedRequest, res) => {
+    const messages = [...store.messages.values()].filter((message) => message.senderId === req.user!.id || message.recipientId === req.user!.id);
+    res.json({ data: messages, meta: { count: messages.length } });
+  });
+
+  router.post("/messages", requireUser(auth), (req: AuthedRequest, res) => {
+    const input = parseBody(messageSchema, req.body);
+    if (!input) return sendError(res, 400, "INVALID_REQUEST", "Provide a recipient and message body.");
+    if (!store.users.has(input.recipientId)) return sendError(res, 404, "USER_NOT_FOUND", "Recipient not found.");
+
+    const message = { id: createId(), senderId: req.user!.id, ...input, createdAt: now() };
+    store.messages.set(message.id, message);
+    res.status(201).json({ data: message });
+  });
+
+  router.get("/notifications/mine", requireUser(auth), (req: AuthedRequest, res) => {
+    const notifications = [...store.notifications.values()].filter((notification) => notification.userId === req.user!.id);
+    res.json({ data: notifications, meta: { count: notifications.length } });
+  });
+
+  router.get("/maintenance/mine", requireUser(auth, ["student"]), (req: AuthedRequest, res) => {
+    const requests = [...store.maintenanceRequests.values()].filter((request) => request.studentId === req.user!.id);
+    res.json({ data: requests, meta: { count: requests.length } });
+  });
+
+  router.post("/maintenance", requireUser(auth, ["student"]), (req: AuthedRequest, res) => {
+    const input = parseBody(maintenanceSchema, req.body);
+    if (!input) return sendError(res, 400, "INVALID_REQUEST", "Provide a subject and maintenance description.");
+    if (input.propertyId && !store.properties.has(input.propertyId)) return sendError(res, 404, "PROPERTY_NOT_FOUND", "Property not found.");
+
+    const request = { id: createId(), studentId: req.user!.id, ...input, status: "submitted" as const, createdAt: now() };
+    store.maintenanceRequests.set(request.id, request);
+    res.status(201).json({ data: request });
   });
 
   router.post("/support/tickets", (req, res) => {

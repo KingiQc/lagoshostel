@@ -68,4 +68,31 @@ describe("backend API", () => {
     expect(response.status).toBe(401);
     expect((await response.json()).error.code).toBe("UNAUTHENTICATED");
   });
+
+  it("returns empty operation states until records are created", async () => {
+    const signup = await fetch(`${baseUrl}/auth/signup`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        name: "Operations Student",
+        email: `operations-${Date.now()}@example.com`,
+        password: "correct-horse-battery-staple",
+        role: "student",
+      }),
+    });
+    const { token } = await signup.json();
+    const headers = { authorization: `Bearer ${token}` };
+
+    const [payments, messages, notifications, maintenance] = await Promise.all([
+      fetch(`${baseUrl}/payments/mine`, { headers }),
+      fetch(`${baseUrl}/messages/mine`, { headers }),
+      fetch(`${baseUrl}/notifications/mine`, { headers }),
+      fetch(`${baseUrl}/maintenance/mine`, { headers }),
+    ]);
+
+    for (const response of [payments, messages, notifications, maintenance]) {
+      expect(response.status).toBe(200);
+      expect((await response.json()).data).toEqual([]);
+    }
+  });
 });

@@ -75,6 +75,36 @@ export type Booking = {
   createdAt: string;
 };
 
+export const maintenanceStatuses = ["submitted", "in_progress", "resolved"] as const;
+export type MaintenanceStatus = (typeof maintenanceStatuses)[number];
+
+export type MaintenanceRequest = {
+  id: string;
+  studentId: string;
+  propertyId?: string;
+  subject: string;
+  description: string;
+  status: MaintenanceStatus;
+  createdAt: string;
+};
+
+export type Message = {
+  id: string;
+  senderId: string;
+  recipientId: string;
+  body: string;
+  createdAt: string;
+};
+
+export type Notification = {
+  id: string;
+  userId: string;
+  title: string;
+  body: string;
+  readAt?: string;
+  createdAt: string;
+};
+
 export type SupportTicket = {
   id: string;
   name: string;
