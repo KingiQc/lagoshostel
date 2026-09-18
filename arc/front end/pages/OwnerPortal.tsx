@@ -36,7 +36,7 @@ function readDraft(): PropertyDraft | null {
 
 function Shell({ children }: { children: ReactNode }) {
   const path = useLocation().pathname;
-  return <div className="dashboard-page min-h-screen bg-white text-[#171717]"><DashboardNav path={path} roleLabel="Owner workspace" workspaceTitle="Owner dashboard" nav={nav} /><DashboardHero roleLabel="Owner workspace" title={titles[path]?.[0] ?? "Owner workspace"} subtitle={titles[path]?.[1] ?? "Manage your accommodation business."} /><main className="mx-auto w-full max-w-[1240px] px-5 py-10 lg:px-8">{children}</main><DashboardFooter /></div>;
+  return <div className="dashboard-page min-h-screen bg-white text-[#171717]"><DashboardNav path={path} roleLabel="Owner workspace" workspaceTitle="Owner dashboard" nav={nav} /><DashboardHero title={titles[path]?.[0] ?? "Owner workspace"} subtitle={titles[path]?.[1] ?? "Manage your accommodation business."} /><main className="mx-auto w-full max-w-[1240px] px-5 py-10 lg:px-8">{children}</main><DashboardFooter /></div>;
 }
 
 function Heading({ path }: { path: string }) { const [title, subtitle] = titles[path] ?? ["Owner workspace", "Manage your accommodation business."]; return <div><p className="eyebrow">Owner workspace</p><h1 className="mt-2 font-display text-4xl font-extrabold tracking-[-.06em] sm:text-5xl">{title}</h1><p className="mt-3 text-sm text-black/50">{subtitle}</p></div>; }

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import ProjectFooter from "@/components/ProjectFooter";
 
 type PublicPath =
   | "/universities"
@@ -379,7 +380,7 @@ export default function PublicPage() {
         {!isLegal && !isContact && !isFaq && <Link to="/find-a-hostel" className="mt-8 inline-flex rounded-full bg-black px-6 py-3.5 text-sm font-bold text-white">Explore hostels <ArrowRight className="ml-2 h-4 w-4" /></Link>}
         {isLegal ? <div className="mt-12 max-w-[760px] space-y-8 text-sm leading-7 text-black/60"><section><h2 className="font-display text-2xl font-extrabold text-black">What this page covers</h2><p className="mt-3">This page provides the current product-facing summary for {path === "/terms" ? "using arc() and its accommodation workflows" : "how information is intended to be handled across arc()"}. Production legal text, retention details and service-specific terms must be connected before launch.</p></section><section><h2 className="font-display text-2xl font-extrabold text-black">Before launch</h2><p className="mt-3">The final version will be reviewed alongside the authentication, marketplace, support and payment services so the published policy matches the actual product behavior.</p></section><div className="rounded-2xl border border-[#f5b544]/50 bg-[#fff8e8] p-5 text-black/70"><strong className="text-black">Important:</strong> This frontend page is informational and is not a substitute for the final legal agreement or privacy notice.</div></div> : isContact ? <div className="mt-14 grid gap-12 lg:grid-cols-[.8fr_1.2fr]"><div className="grid content-start gap-4">{page.cards.map(({ icon: Icon, title, text }) => <div key={title} className="feature-card"><Icon className="h-5 w-5 text-[#a36500]" /><h2 className="mt-5 font-display text-lg font-extrabold tracking-[-.03em]">{title}</h2><p className="mt-2 text-sm leading-6 text-black/55">{text}</p></div>)}</div><ContactForm /></div> : isFaq ? <FaqDetails /> : <div className="mt-20 grid gap-4 md:grid-cols-3">{page.cards.map(({ icon: Icon, title, text }) => <article key={title} className="feature-card"><Icon className="h-5 w-5 text-[#a36500]" /><h2 className="mt-6 font-display text-xl font-extrabold tracking-[-.04em]">{title}</h2><p className="mt-3 text-sm leading-6 text-black/55">{text}</p></article>)}</div>}
       </main>
-      <PublicFooter />
+      <ProjectFooter />
     </div>
   );
 }

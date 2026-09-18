@@ -100,11 +100,11 @@ function OwnerShell({ children }: { children: React.ReactNode }) {
   const path = useLocation().pathname;
   const title = path.includes("/") && path !== "/owner/applications" ? "Review application" : "Applications";
   const subtitle = title === "Review application" ? "Review the student’s details before deciding what happens next." : "Review students looking for a place to live.";
-  return <div className="dashboard-page min-h-screen bg-white text-[#171717]"><DashboardNav path={path} roleLabel="Owner workspace" workspaceTitle="Owner dashboard" nav={nav} /><DashboardHero roleLabel="Owner workspace" title={title} subtitle={subtitle} /><main className="mx-auto w-full max-w-[1240px] px-5 py-10 lg:px-8">{children}</main><DashboardFooter /></div>;
+  return <div className="dashboard-page min-h-screen bg-white text-[#171717]"><DashboardNav path={path} roleLabel="Owner workspace" workspaceTitle="Owner dashboard" nav={nav} /><DashboardHero title={title} subtitle={subtitle} /><main className="mx-auto w-full max-w-[1240px] px-5 py-10 lg:px-8">{children}</main><DashboardFooter /></div>;
 }
 
 function PageHeader({ detail = false }: { detail?: boolean }) {
-  return <div><Link to="/owner/dashboard" className="mb-6 inline-flex items-center text-xs font-bold text-black/45 hover:text-black"><ArrowLeft className="mr-2 h-4 w-4" /> Owner overview</Link><p className="eyebrow">Owner workspace</p><h1 className="mt-2 font-display text-4xl font-extrabold tracking-[-.06em] sm:text-5xl">{detail ? "Review application" : "Applications"}</h1><p className="mt-3 text-sm text-black/50">{detail ? "Review the student’s details before deciding what happens next." : "Review students looking for a place to live."}</p></div>;
+  return <div><Link to="/owner/dashboard" className="mb-6 inline-flex items-center text-xs font-bold text-black/45 hover:text-black"><ArrowLeft className="mr-2 h-4 w-4" /> Owner overview</Link><p className="eyebrow">Applications</p><h1 className="mt-2 font-display text-4xl font-extrabold tracking-[-.06em] sm:text-5xl">{detail ? "Review application" : "Applications"}</h1><p className="mt-3 text-sm text-black/50">{detail ? "Review the student’s details before deciding what happens next." : "Review students looking for a place to live."}</p></div>;
 }
 
 function EmptyApplications() {

@@ -39,7 +39,7 @@ function readDraft(): PropertyDraft | null {
 }
 
 function PropertyHeader() {
-  return <header className="border-b border-white/10 bg-black text-white"><div className="mx-auto flex h-[74px] max-w-[1100px] items-center justify-between px-5 lg:px-8"><Link to="/" className="font-display text-[25px] font-extrabold tracking-[-.08em]">arc<span className="text-[#f5b544]">()</span></Link><div className="flex items-center gap-3"><span className="hidden text-xs text-white/50 sm:block">Owner workspace</span><Link to="/owner/dashboard" className="rounded-full bg-white px-4 py-2 text-xs font-bold text-black">Save & exit</Link></div></div></header>;
+  return <header className="border-b border-white/10 bg-black text-white"><div className="mx-auto flex h-[74px] max-w-[1100px] items-center justify-between px-5 lg:px-8"><Link to="/" className="font-display text-[25px] font-extrabold tracking-[-.08em]">arc<span className="text-[#f5b544]">()</span></Link><div className="flex items-center gap-3"><span className="hidden text-xs text-white/50 sm:block">Property listing</span><Link to="/owner/dashboard" className="rounded-full bg-white px-4 py-2 text-xs font-bold text-black">Save & exit</Link></div></div></header>;
 }
 
 function PropertyStep({ value, onChange }: { value: PropertyDetails; onChange: (value: PropertyDetails) => void }) {

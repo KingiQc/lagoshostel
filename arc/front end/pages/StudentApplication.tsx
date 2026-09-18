@@ -81,7 +81,7 @@ function Header() {
           arc<span className="text-[#f5b544]">()</span>
         </Link>
         <div className="flex items-center gap-3">
-          <span className="hidden text-xs text-white/50 sm:block">Student space</span>
+          <span className="hidden text-xs text-white/50 sm:block">Application profile</span>
           <Link to="/student/applications" className="rounded-full bg-white px-4 py-2 text-xs font-bold text-black">
             My applications
           </Link>

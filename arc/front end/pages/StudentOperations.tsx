@@ -83,7 +83,7 @@ function formatDate(value: string) {
 }
 
 function Shell({ path, children }: { path: string; children: React.ReactNode }) {
-  return <div className="dashboard-page min-h-screen bg-white text-[#171717]"><DashboardNav path={path} roleLabel="Student space" workspaceTitle="My arc()" nav={nav} /><DashboardHero roleLabel="Student space" title={content[path]?.[0] ?? "Student space"} subtitle={content[path]?.[1] ?? "Manage your accommodation journey."} /><main className="mx-auto w-full max-w-[1240px] px-5 py-10 lg:px-8"><Link to="/student" className="mb-6 inline-flex items-center text-[15px] font-bold text-black/45 hover:text-black"><ArrowRight className="mr-2 h-4 w-4 rotate-180" /> Overview</Link>{children}</main><DashboardFooter /></div>;
+  return <div className="dashboard-page min-h-screen bg-white text-[#171717]"><DashboardNav path={path} roleLabel="Student space" workspaceTitle="My arc()" nav={nav} /><DashboardHero title={content[path]?.[0] ?? "Student space"} subtitle={content[path]?.[1] ?? "Manage your accommodation journey."} /><main className="mx-auto w-full max-w-[1240px] px-5 py-10 lg:px-8"><Link to="/student" className="mb-6 inline-flex items-center text-[15px] font-bold text-black/45 hover:text-black"><ArrowRight className="mr-2 h-4 w-4 rotate-180" /> Overview</Link>{children}</main><DashboardFooter /></div>;
 }
 
 function Applications({ application }: { application: ApplicationRecord | null }) {

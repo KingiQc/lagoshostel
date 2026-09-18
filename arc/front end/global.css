@@ -12,10 +12,10 @@
   */
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 11%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
@@ -103,10 +103,10 @@
   }
 
   html { scroll-behavior: smooth; }
-  body { font-family: Verdana, Geneva, sans-serif; font-size: 15px; }
-  .font-display { font-family: Verdana, Geneva, sans-serif; }
-  .eyebrow { font-size: 15px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: rgba(23,23,23,.48); }
-  .section-title { font-family: 'Manrope', sans-serif; font-size: clamp(2.25rem, 4vw, 4rem); font-weight: 800; line-height: .98; letter-spacing: -.065em; }
+  body { font-family: Poppins, Arial, sans-serif; font-size: 15px; color: #1c1c1c; }
+  .font-display { font-family: Poppins, Arial, sans-serif; }
+  .eyebrow { font-size: 15px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: rgba(28,28,28,.48); }
+  .section-title { font-family: Poppins, Arial, sans-serif; font-size: clamp(2.25rem, 4vw, 4rem); font-weight: 800; line-height: .98; letter-spacing: -.065em; }
   .search-field { display: flex; min-width: 0; align-items: center; gap: 10px; border-radius: 12px; background: #f7f7f5; padding: 11px 12px; }
   .search-field > svg { height: 16px; width: 16px; flex: none; color: rgba(23,23,23,.45); }
   .search-field span { min-width: 0; display: block; }
@@ -126,6 +126,8 @@
   .menu-icon-swap { animation: menu-icon-swap .18s ease-out both; }
   @keyframes menu-icon-swap { from { opacity: 0; transform: rotate(-30deg) scale(.7); } to { opacity: 1; transform: rotate(0) scale(1); } }
   .dashboard-page [class*="border-black/10"] { border-color: rgb(156 163 175) !important; }
+  [class~="text-[#171717]"], [class~="text-black"] { color: #1c1c1c !important; }
+  button, a.rounded-full, a.rounded-lg, a.rounded-xl { border-radius: 5px !important; }
 
   * { border-color: hsl(var(--border)); }
 
@@ -157,4 +159,6 @@
     font-size: 15px !important;
     line-height: 1.4;
   }
+  [class~="text-[#171717]"], [class~="text-black"] { color: #1c1c1c !important; }
+  button, a.rounded-full, a.rounded-lg, a.rounded-xl { border-radius: 5px !important; }
 }
