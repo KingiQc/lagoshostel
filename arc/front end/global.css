@@ -123,6 +123,9 @@
   .auth-input:focus { border-bottom-color: #1769e8; }
   .auth-social { display: flex; height: 27px; width: 27px; align-items: center; justify-content: center; border-radius: 999px; color: white; font-size: 15px; font-weight: 800; }
   @media (max-width: 640px) { .auth-underlay-nav { gap: 10px; padding: 0 16px; font-size: 15px; } .auth-underlay-nav span:nth-child(2), .auth-underlay-nav span:nth-child(3) { display: none; } }
+  .menu-icon-swap { animation: menu-icon-swap .18s ease-out both; }
+  @keyframes menu-icon-swap { from { opacity: 0; transform: rotate(-30deg) scale(.7); } to { opacity: 1; transform: rotate(0) scale(1); } }
+  .dashboard-page [class*="border-black/10"] { border-color: rgb(156 163 175) !important; }
 
   * { border-color: hsl(var(--border)); }
 

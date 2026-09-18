@@ -10,7 +10,6 @@ import Index from "./pages/Index";
 import FindHostel from "./pages/FindHostel";
 import HostelDetails from "./pages/HostelDetails";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import OwnerDashboard from "./pages/OwnerDashboard";
 import StudentPortal from "./pages/StudentPortal";
 import OwnerPortal from "./pages/OwnerPortal";
@@ -54,7 +53,7 @@ const App = () => (
           <Route path="/student/bookings/:id" element={<BookingDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<StudentPortal />} />
           <Route path="/owner/dashboard" element={<OwnerPortal />} />
           <Route path="/owner/properties/new" element={<AddProperty />} />
           <Route path="/owner/applications/:id" element={<OwnerApplications />} />

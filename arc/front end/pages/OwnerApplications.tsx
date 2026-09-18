@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import DashboardFooter from "@/components/DashboardFooter";
+import DashboardHero from "@/components/DashboardHero";
+import DashboardNav from "@/components/DashboardNav";
 import {
   ArrowLeft,
   ArrowRight,
@@ -95,7 +98,9 @@ function statusClass(status: ApplicationStatus) {
 
 function OwnerShell({ children }: { children: React.ReactNode }) {
   const path = useLocation().pathname;
-  return <div className="min-h-screen bg-[#f7f6f3] text-[#171717]"><header className="border-b border-white/10 bg-black text-white"><div className="mx-auto flex h-[74px] max-w-[1240px] items-center justify-between px-5 lg:px-8"><Link to="/" className="font-display text-[25px] font-extrabold tracking-[-.08em]">arc<span className="text-[#f5b544]">()</span></Link><span className="hidden text-sm font-semibold text-white/70 sm:block">Owner workspace</span><Link to="/" className="text-xs font-bold text-white/60"><LogOut className="mr-2 inline h-4 w-4" /> Exit</Link></div></header><div className="mx-auto grid max-w-[1240px] gap-8 px-5 py-8 lg:grid-cols-[220px_1fr] lg:px-8"><aside className="hidden lg:block"><p className="eyebrow">Manage your spaces</p><h2 className="mt-2 font-display text-xl font-extrabold">Owner dashboard</h2><nav className="mt-8 space-y-1">{nav.map(([href, Icon, label]) => <Link key={href} to={href} className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${path === href ? "bg-black text-white" : "text-black/55 hover:bg-white"}`}><Icon className="h-4 w-4" />{label}</Link>)}</nav></aside><main>{children}</main></div></div>;
+  const title = path.includes("/") && path !== "/owner/applications" ? "Review application" : "Applications";
+  const subtitle = title === "Review application" ? "Review the student’s details before deciding what happens next." : "Review students looking for a place to live.";
+  return <div className="dashboard-page min-h-screen bg-white text-[#171717]"><DashboardNav path={path} roleLabel="Owner workspace" workspaceTitle="Owner dashboard" nav={nav} /><DashboardHero roleLabel="Owner workspace" title={title} subtitle={subtitle} /><main className="mx-auto w-full max-w-[1240px] px-5 py-10 lg:px-8">{children}</main><DashboardFooter /></div>;
 }
 
 function PageHeader({ detail = false }: { detail?: boolean }) {

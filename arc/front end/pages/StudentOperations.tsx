@@ -1,5 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import DashboardFooter from "@/components/DashboardFooter";
+import DashboardHero from "@/components/DashboardHero";
+import DashboardNav from "@/components/DashboardNav";
 import { createMessageSocket, type RealtimeMessage } from "@/lib/realtime";
 import {
   ArrowRight,
@@ -80,20 +83,7 @@ function formatDate(value: string) {
 }
 
 function Shell({ path, children }: { path: string; children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-[#f7f6f3] text-[#171717]">
-      <header className="border-b border-white/10 bg-black text-white">
-        <div className="mx-auto flex h-[74px] max-w-[1200px] items-center justify-between px-5 lg:px-8">
-          <Link to="/" className="font-display text-[25px] font-extrabold tracking-[-.08em]">arc<span className="text-[#f5b544]">()</span></Link>
-          <div className="flex items-center gap-3"><span className="hidden text-xs text-white/50 sm:block">Student space</span><Link to="/student" className="rounded-full bg-white px-4 py-2 text-xs font-bold text-black">Dashboard</Link></div>
-        </div>
-      </header>
-      <div className="mx-auto grid max-w-[1200px] gap-8 px-5 py-8 lg:grid-cols-[220px_1fr] lg:px-8">
-        <aside className="hidden lg:block"><p className="eyebrow">Student space</p><h2 className="mt-2 font-display text-xl font-extrabold">My arc()</h2><nav className="mt-8 space-y-1">{nav.map(([href, Icon, label]) => <Link key={href} to={href} className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${path === href ? "bg-black text-white" : "text-black/55 hover:bg-white"}`}><Icon className="h-4 w-4" />{label}</Link>)}</nav><Link to="/" className="mt-16 flex items-center gap-3 px-3 text-xs font-bold text-black/40"><LogOut className="h-4 w-4" /> Log out</Link></aside>
-        <main><Link to="/student" className="mb-6 inline-flex items-center text-xs font-bold text-black/45 hover:text-black"><ArrowRight className="mr-2 h-4 w-4 rotate-180" /> Overview</Link><p className="eyebrow">Student space</p><h1 className="mt-2 font-display text-4xl font-extrabold tracking-[-.06em] sm:text-5xl">{content[path]?.[0] ?? "Student space"}</h1><p className="mt-3 text-sm text-black/50">{content[path]?.[1]}</p>{children}</main>
-      </div>
-    </div>
-  );
+  return <div className="dashboard-page min-h-screen bg-white text-[#171717]"><DashboardNav path={path} roleLabel="Student space" workspaceTitle="My arc()" nav={nav} /><DashboardHero roleLabel="Student space" title={content[path]?.[0] ?? "Student space"} subtitle={content[path]?.[1] ?? "Manage your accommodation journey."} /><main className="mx-auto w-full max-w-[1240px] px-5 py-10 lg:px-8"><Link to="/student" className="mb-6 inline-flex items-center text-[15px] font-bold text-black/45 hover:text-black"><ArrowRight className="mr-2 h-4 w-4 rotate-180" /> Overview</Link>{children}</main><DashboardFooter /></div>;
 }
 
 function Applications({ application }: { application: ApplicationRecord | null }) {

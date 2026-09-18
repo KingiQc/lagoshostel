@@ -32,7 +32,7 @@ export default function Login({ embedded = false, initialMode, onClose }: LoginP
         ? await signup({ name, email, password, role })
         : await login({ email, password });
       window.localStorage.setItem("arc.session", JSON.stringify(response));
-      navigate(response.user.role === "owner" ? "/owner/dashboard" : "/dashboard");
+      navigate(response.user.role === "owner" ? "/owner/dashboard" : "/student");
       onClose?.();
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : "We could not complete authentication.");
