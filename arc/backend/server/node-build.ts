@@ -1,6 +1,6 @@
 import http from "node:http";
 import path from "node:path";
-import { attachRealtime } from "../backend/realtime";
+import { attachRealtime } from "../realtime";
 import { createServer } from "./index";
 import * as express from "express";
 

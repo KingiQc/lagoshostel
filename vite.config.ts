@@ -2,8 +2,8 @@ import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
 import type { Server as NodeHttpServer } from "node:http";
-import { attachRealtime } from "./backend/realtime";
-import { createServer } from "./server";
+import { attachRealtime } from "./arc/backend/realtime";
+import { createServer } from "./arc/backend/server";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -11,8 +11,8 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     fs: {
-      allow: ["./client", "./shared", "index.html"],
-      deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
+      allow: ["./arc/front end", "./arc/shared", "index.html"],
+      deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "arc/backend/**"],
     },
   },
   build: {
@@ -21,8 +21,8 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), expressPlugin()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./client"),
-      "@shared": path.resolve(__dirname, "./shared"),
+      "@": path.resolve(__dirname, "./arc/front end"),
+      "@shared": path.resolve(__dirname, "./arc/shared"),
     },
   },
 }));

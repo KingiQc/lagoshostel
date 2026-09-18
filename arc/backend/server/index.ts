@@ -1,10 +1,10 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { AuthService } from "../backend/auth";
-import { getBackendConfig } from "../backend/config";
-import { createBackendRouter } from "../backend";
-import { createBackendStore } from "../backend/store";
+import { AuthService } from "../auth";
+import { getBackendConfig } from "../config";
+import { createBackendRouter } from "..";
+import { createBackendStore } from "../store";
 import { handleDemo } from "./routes/demo";
 
 export function createServer() {

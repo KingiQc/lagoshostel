@@ -24,15 +24,14 @@
     "strictNullChecks": false,
 
     "paths": {
-      "@/*": ["./client/*"],
-      "@shared/*": ["./shared/*"]
+      "@/*": ["./arc/front end/*"],
+      "@shared/*": ["./arc/shared/*"]
     }
   },
   "include": [
-    "client/**/*",
-    "server/**/*",
-    "backend/**/*",
-    "shared/**/*",
+    "arc/front end/**/*",
+    "arc/backend/**/*",
+    "arc/shared/**/*",
     "scripts/**/*.ts",
     "vite.config.ts",
     "vite.config.server.ts"
